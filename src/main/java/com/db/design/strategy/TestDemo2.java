@@ -1,6 +1,5 @@
 package com.db.design.strategy;
 
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,4 +72,78 @@ class Commodity{
         this.price = price;
     }
 }
+abstract class CashSuper{
+    public abstract BigDecimal algorithm(BigDecimal priceCount);
+}
 
+class CashNormal extends CashSuper{
+    @Override
+    public BigDecimal algorithm(BigDecimal priceCount) {
+        return priceCount;
+    }
+}
+
+
+/**
+ * 打折算法
+ */
+class CashRebate extends CashSuper{
+
+    private BigDecimal rebate = new BigDecimal("0.8");
+
+    public CashRebate(BigDecimal rebate) {
+        this.rebate = rebate;
+    }
+
+    @Override
+    public BigDecimal algorithm(BigDecimal priceCount) {
+        return rebate.multiply(priceCount);
+    }
+}
+
+class CashReturn extends CashSuper{
+
+    private BigDecimal full = new BigDecimal("300");
+
+    private BigDecimal reduce = new BigDecimal("100");
+
+    public CashReturn(BigDecimal full, BigDecimal reduce) {
+        this.full = full;
+        this.reduce = reduce;
+    }
+
+    @Override
+    public BigDecimal algorithm(BigDecimal priceCount) {
+        if(priceCount.compareTo(full) > 0){
+            return priceCount.subtract(reduce);
+        }else {
+            return priceCount;
+        }
+    }
+}
+
+class Context2{
+
+    private CashSuper cashSuper;
+
+    public Context2(CashSuper cashSuper){
+        this.cashSuper = cashSuper;
+    }
+
+    public BigDecimal getResult(BigDecimal priceCount){
+        System.out.println(cashSuper.algorithm(priceCount));
+        return null;
+    }
+
+    public static void main(String[] args) {
+
+        Context2 context2 = new Context2(new CashNormal());
+        context2.getResult(new BigDecimal("20"));
+
+        Context2 context2_1 = new Context2(new CashRebate(new BigDecimal("0.8")));
+        context2_1.getResult(new BigDecimal("20"));
+
+        Context2 context2_2 = new Context2(new CashReturn(new BigDecimal("70"),new BigDecimal("20")));
+        context2_2.getResult(new BigDecimal("100"));
+    }
+}
