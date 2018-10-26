@@ -107,6 +107,10 @@ class CashReturn extends CashSuper{
 
     private BigDecimal reduce = new BigDecimal("100");
 
+    public CashReturn(){
+
+    }
+
     public CashReturn(BigDecimal full, BigDecimal reduce) {
         this.full = full;
         this.reduce = reduce;
@@ -122,12 +126,23 @@ class CashReturn extends CashSuper{
     }
 }
 
-class Context2{
+class CashContext{
 
     private CashSuper cashSuper;
 
-    public Context2(CashSuper cashSuper){
-        this.cashSuper = cashSuper;
+    public CashContext(String type){
+
+        switch (type){
+            case "正常收费":
+                this.cashSuper = new CashNormal();
+                break;
+            case "满300返100":
+                this.cashSuper = new CashReturn();
+                break;
+            case "打折":
+                this.cashSuper = new CashRebate(new BigDecimal("0.8"));
+                break;
+        }
     }
 
     public BigDecimal getResult(BigDecimal priceCount){
@@ -137,13 +152,8 @@ class Context2{
 
     public static void main(String[] args) {
 
-        Context2 context2 = new Context2(new CashNormal());
+        CashContext context2 = new CashContext("打折");
         context2.getResult(new BigDecimal("20"));
 
-        Context2 context2_1 = new Context2(new CashRebate(new BigDecimal("0.8")));
-        context2_1.getResult(new BigDecimal("20"));
-
-        Context2 context2_2 = new Context2(new CashReturn(new BigDecimal("70"),new BigDecimal("20")));
-        context2_2.getResult(new BigDecimal("100"));
     }
 }
