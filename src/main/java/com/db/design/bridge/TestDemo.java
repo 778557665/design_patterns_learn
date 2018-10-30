@@ -1,4 +1,4 @@
-package com.db.design.Bridge;
+package com.db.design.bridge;
 
 public class TestDemo {
     public static void main(String[] args) {
