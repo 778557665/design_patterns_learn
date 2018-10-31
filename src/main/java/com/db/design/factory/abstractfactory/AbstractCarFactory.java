@@ -1,10 +1,6 @@
 package com.db.design.factory.abstractfactory;
 
-public abstract class AbstractCarFactory implements Car {
+public abstract class AbstractCarFactory{
 
-    public void gotoWork() {
-        chooseCar();
-    }
-
-    protected abstract void chooseCar();
+    protected abstract Car produce();
 }

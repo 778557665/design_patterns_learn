@@ -1,7 +1,8 @@
 package com.db.design.factory.abstractfactory;
 
-public class Bike extends AbstractCarFactory {
-    protected void chooseCar() {
-        System.out.println("今天骑自行车上班");
+public class Bike implements Car {
+    @Override
+    public void gotoWork() {
+        System.out.println("骑自行车上班");
     }
 }
